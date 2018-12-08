@@ -15,10 +15,12 @@ while True:
 
 infile.close()
 
+# calculate frequency
 freq = 0
 for i in inlist:
     freq += int(i)
 
+# write solution
 ofile= open("output","w")
-
 ofile.write(str(freq))
+ofile.close()
