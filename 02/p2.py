@@ -1,8 +1,6 @@
 #! /usr/bin/python
 # https://adventofcode.com/2018/day/2
 
-from collections import defaultdict
-
 # find the number of differences between two IDs
 def compareTwoIDs(first, second):
     diffcount = 0
