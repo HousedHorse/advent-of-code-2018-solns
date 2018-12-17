@@ -39,6 +39,6 @@ for ID in inlist:
 checksum = twos * threes
 
 # write solution
-ofile= open("output","w")
+ofile= open("output1","w")
 ofile.write(str(checksum))
 ofile.close()

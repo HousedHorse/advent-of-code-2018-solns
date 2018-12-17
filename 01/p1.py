@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# https://adventofcode.com/2018/day/1
 
 infile = open("input","r")
 
@@ -21,6 +22,6 @@ for i in inlist:
     freq += int(i)
 
 # write solution
-ofile= open("output","w")
+ofile= open("output1","w")
 ofile.write(str(freq))
 ofile.close()

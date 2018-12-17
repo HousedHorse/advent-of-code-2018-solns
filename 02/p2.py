@@ -49,6 +49,6 @@ for i in range(len(inlist)):
 
 
 # write solution
-ofile= open("output","w")
+ofile= open("output2","w")
 ofile.write(soln)
 ofile.close()
