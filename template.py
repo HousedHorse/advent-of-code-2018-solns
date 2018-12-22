@@ -19,13 +19,7 @@ def readInput():
     infile.close()
     return lines
 
-def writeSoln(part, soln):
-    outfile = open("output" + str(part), "w")
-    outfile.write(str(soln))
-    outfile.close()
-
 def main():
     lines = readInput()
-    writeSoln(1,"foo")
 
 main()
