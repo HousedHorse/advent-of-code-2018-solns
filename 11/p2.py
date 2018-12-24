@@ -10,9 +10,12 @@ puzzleInput = 6042
 class Grid:
     def __init__(self,gsn):
         self.grid = []
-        for y in range(1,301):
+        # hold sums of vertical strips of size 1 .. 300
+        self.stripSum = [[[0 for _ in range(300)] for _ in range(300)] for _ in range(301)]
+
+        for x in range(1,301):
             self.grid.append([])
-            for x in range(1,301):
+            for y in range(1,301):
                 rackId = x + 10
                 power = ((rackId * y) + gsn) * rackId
                 # keep only 100's digit
@@ -23,37 +26,63 @@ class Grid:
                 else:
                     power = 0
                 power -= 5
-                self.grid[y - 1].append(power)
+                self.grid[x - 1].append(power)
 
-    def sumnxn(self,x,y,size):
-        # check we will be on the grid
-        if x < 1 or y < 1 or x > (300 - size) or y > (300 - size):
-            return None
+        # preprocess the matrix to calculate stripsums
+        self.preProcess()
 
-        # normalize to deal with a list
-        x -= 1
-        y -= 1
+    # calculate strip sums for k = 1 up to N
+    def preProcess(self):
+        for k in range (300):
+            # column by column
+            for x in range (300):
+                # first kx1 rectangle
+                total = 0
+                for y in range(k):
+                    total += self.grid[x][y]
+                self.stripSum[k][x][0] = total
 
+                # remaining rectangles
+                for y in range(1,300-k):
+                    total += self.grid[x][y+k-1] - self.grid[x][y-1]
+                    self.stripSum[k][x][y] = total
+
+    def maxSumNxN(self,size):
         total = 0
-        for i in range(y,y+size):
-            for j in range(x,x+size):
-                total += self.grid[i][j]
+        maxtotal = None
+        xhi = 0
+        yhi = 0
+        for j in range(0,300-size+1):
 
-        return total
+            total = 0
+            # first subsquare in row j
+            for i in range(0,size):
+                total += self.stripSum[size][i][j]
+
+            if maxtotal == None or total > maxtotal:
+                maxtotal = total
+                xhi,yhi = i,j
+
+            # remaining subsqures in row j
+            for i in range(1,300-size+1):
+                total += self.stripSum[size][i+size-1][j] - self.stripSum[size][i-1][j]
+                if maxtotal == None or total > maxtotal:
+                    maxtotal = total
+                    xhi,yhi = i,j
+
+        xhi += 1
+        yhi += 1
+        return xhi,yhi,maxtotal
 
     def findHighestSum(self):
-        total = None
+        highest = None
         xhi, yhi, sizehi = 0,0,0
 
         for size in range(1,301):
-            for y in range(1,301):
-                for x in range(1,301):
-                    newSum = self.sumnxn(x,y,size)
-                    if newSum != None and (total == None or newSum > total):
-                        total = newSum
-                        xhi = x
-                        yhi = y
-                        sizehi = size
+            x,y,total = self.maxSumNxN(size)
+            if highest == None or total > highest:
+                highest = total
+                xhi,yhi,sizehi = x,y,size
 
         return xhi,yhi,sizehi
 
