@@ -42,7 +42,7 @@ def parseInput(lines):
 def findSoln(initial,rules):
     state = initial
     offset = 0
-    for gen in range(20):
+    for gen in range(1000):
         state = '.....'+state+'.....'
         offset += 5
         newState = ['.' for _ in state]
@@ -53,7 +53,17 @@ def findSoln(initial,rules):
             else:
                 newState[i+2] = '.'
         state = ''.join(newState)
-    print(state)
+        # strip extra dots 
+        oldlen = len(state)
+        state = state.lstrip('.')
+        offset -= (oldlen-len(state))
+        state = state.rstrip('.')
+        print(state,offset)
+
+    # this is really hacky
+    # noticed that it devolves into a stable pattern somwhere around 1000 generations
+    # then we can just manually check the offset for the 50000000000th
+    offset = -940 - int(49999999000)
 
     soln = 0
     for i,c in enumerate(state):
