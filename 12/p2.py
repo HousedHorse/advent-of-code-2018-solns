@@ -1,5 +1,5 @@
 #! /usr/bin/python
-# https://adventofcode.com/2018/day/1
+# https://adventofcode.com/2018/day/12
 
 from collections import defaultdict
 import re
